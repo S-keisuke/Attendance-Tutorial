@@ -2,42 +2,88 @@
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
-      <td>【<%= l(@first_day, format: :middle) %>】勤怠管理表</td>
-      <td>指定勤務時間：<%= format_basic_info(@user.work_time) %></td>
-      <td>基本時間：<%= format_basic_info(@user.basic_time) %></td>
-      <td>月初日：<%= l(@first_day, format: :short) %></td>
+      <td class="col-5 text-left" style="width: 35%"><%= link_to "◀", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
+          【<%= l(@first_day, format: :middle) %>】勤怠管理表
+          <%= link_to "▶", user_path(date: @first_day.next_month), class: "btn btn-primary " %>
+      </td>
+      <td class="text-left" style="width: 20%">指定勤務時間：<%= format_basic_info(@user.work_time) %></td>
+      <td class="text-left" colspan="3">基本時間：<%= format_basic_info(@user.basic_time) %></td>
+      <td class="text-left" style="width: 15%">月初日：<%= l(@first_day, format: :short) %></td>
     </tr>
 
     <tr>
-      <td>所属：<%= @user.department.present? ? @user.department : "未所属" %></td>
-      <td>名前：<%= @user.name %></td>
-      <td>出勤日数：<%= @worked_sum %>日</td>
-      <td>月末日：<%= l(@last_day, format: :short) %></td>
+      <td class="text-left">所属：<%= @user.department.present? ? @user.department : "未所属" %></td>
+      <td class="text-left" style="width: 20%">名前：<%= @user.name %></td>
+      <td class="text-left" style="width: 10%">コード</td>
+      <td class="text-left" style="width: 5%"><%= "#" %></td>
+      <td class="text-left"  style="width: 15%">出勤日数：<%= @worked_sum %>日</td>
+      <td class="text-left">月末日：<%= l(@last_day, format: :short) %></td>
     </tr>
   </table>
 </div>
 
 <div class="btn-users-show">
-  <%= link_to "⇦ 前月へ", user_path(date: @first_day.prev_month), class: "btn btn-info" %>
-  <%= link_to "1ヶ月の勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-success" %>
-  <%= link_to "次月へ ⇨", user_path(date: @first_day.next_month), class: "btn btn-info" %>
+  <%= link_to "勤怠編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
 </div>
 
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
     <thead>
       <tr>
-        <th>日付</th>
-        <th>曜日</th>
-        <th>勤怠登録</th>
-        <th>出勤時間</th>
-        <th>退勤時間</th>
-        <th>在社時間</th>
-        <th>備考</th>
+        <th rowspan="2">日付</th>
+        <th rowspan="2">曜日</th>
+        <th colspan="3">出社</th>
+        <th colspan="3">退社</th>
+        <th rowspan="2">在社時間</th>
+        <th rowspan="2">備考</th>
+        <th rowspan="2">残業指示</th>
+        <th rowspan="2">指示者</th>
+      </tr>
+      <tr>
+        <th>時</th>
+        <th>分</th>
+        <th></th>
+        <th>時</th>
+        <th>分</th>
+        <th></th>
       </tr>
     </thead>
 
     <tbody>
+      <% @attendances.each do |day| %>
+        <tr>
+          <td><%= l(day.worked_on, format: :short) %></td>
+          <td>
+            <% if day.worked_on.wday == 0 %>
+              <font color="#FF0000"><%= $days_of_the_week[day.worked_on.wday] %></font>
+            <% elsif day.worked_on.wday == 6 %>
+              <font color="#0000FF"><%= $days_of_the_week[day.worked_on.wday] %></font>
+            <% else %>
+              <font color="#000000"><%= $days_of_the_week[day.worked_on.wday] %></font>
+            <% end %>
+          </td>
+          <td><%= day.started_at.hour if day.started_at.present? %></td>
+          <td><%= day.started_at.min if day.started_at.present? %></td>
+          <td>
+            <% if btn_text = attendance_state(day) %>
+              <%= link_to "#{btn_text}出社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <% end %>
+          </td>
+          <td><%= day.finished_at.hour if day.finished_at.present? %></td>
+          <td><%= day.finished_at.min if day.finished_at.present? %></td>
+          <td></td>
+          <td>
+            <% if day.started_at.present? && day.finished_at.present? %>
+              <%= str_times = working_times(day.started_at, day.finished_at) %>
+              <% @total_working_times = @total_working_times.to_f + str_times.to_f %>
+            <% end %>
+          </td>
+          <td><%= day.note %></td>
+          <td></td>
+          <td></td>
+        </tr>
+      <% end %>
+      
       <% @attendances.each do |day| %>
         <tr>
           <td><%= l(day.worked_on, format: :short) %></td>
