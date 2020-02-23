@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails',        '~> 5.1.6'
-gem 'rails-i18n' # 日本語化するgem
+gem 'rails-i18n' #追加機能No3関連 日本語化するgem
 gem 'bcrypt'
-gem 'faker' # サンプルユーザーを日本人風に生成する
+gem 'faker' # 追加機能No2関連 サンプルユーザーを日本人風に生成する
 gem 'bootstrap-sass'
 gem 'will_paginate' # 複数表示をページ分けできる
 gem 'bootstrap-will_paginate' # 複数表示をページ分けできる（bootstrapでの編集可）

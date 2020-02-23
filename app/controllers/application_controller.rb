@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
-
+  
+  # 追加機能No1関連 
   $days_of_the_week = %w{日 月 火 水 木 金 土}
 
   # beforフィルター

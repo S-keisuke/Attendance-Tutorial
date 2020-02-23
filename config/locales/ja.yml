@@ -1,3 +1,4 @@
+ # 追加機能No4関連 表示するカラム名を日本語化する
 ja:
   activerecord:
     errors:
@@ -206,3 +207,5 @@ ja:
       short: "%m/%d %H:%M"
       time: "%H：%M"
     pm: 午後
+
+  

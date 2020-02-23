@@ -53,7 +53,9 @@
       <% @attendances.each do |day| %>
         <tr>
           <td><%= l(day.worked_on, format: :short) %></td>
+          <!--追加機能No1関連 曜日列に表示される文字によって文字色を分岐させる-->
           <td>
+            <!--追加機能No1関連 day.worked_on.wdayの値が0の時は赤表示、以下同様-->
             <% if day.worked_on.wday == 0 %>
               <font color="#FF0000"><%= $days_of_the_week[day.worked_on.wday] %></font>
             <% elsif day.worked_on.wday == 6 %>
@@ -62,16 +64,24 @@
               <font color="#000000"><%= $days_of_the_week[day.worked_on.wday] %></font>
             <% end %>
           </td>
+          <!--day.started_at は datetime型である、そこからhourの要素を取得-->
           <td><%= day.started_at.hour if day.started_at.present? %></td>
           <td><%= day.started_at.min if day.started_at.present? %></td>
           <td>
+            <!--attendance_state (attendances_helperにて定義)  -->
             <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}出社", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+                <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
             <% end %>
           </td>
           <td><%= day.finished_at.hour if day.finished_at.present? %></td>
           <td><%= day.finished_at.min if day.finished_at.present? %></td>
-          <td></td>
+          <td>
+            <% if btn_text = attendance_state(day) %>
+              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+            <% else %>
+              <P></P>
+            <% end %>
+          </td>
           <td>
             <% if day.started_at.present? && day.finished_at.present? %>
               <%= str_times = working_times(day.started_at, day.finished_at) %>

@@ -16,6 +16,11 @@ class UsersController < ApplicationController
   def new
     @user = User.new
   end
+  
+  # 追加機能No9関連
+  def search
+    @users = User.search(params[:search])
+  end
 
   def create
     @user = User.new(user_params)

@@ -6,6 +6,7 @@ User.create!(name: "Sample User",
              password_confirmation: "password",
              admin: true)
 
+# 追加機能No2関連 seedで作成されるユーザーを日本人風に自動生成する
 60.times do |n|
   name  = Faker::Name.name
   email = "sample-#{n+1}@email.com"
