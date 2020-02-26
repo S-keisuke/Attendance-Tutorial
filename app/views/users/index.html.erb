@@ -1,8 +1,14 @@
 <% provide(:title, 'All Users') %>
-<h1>ユーザー一覧</h1>
 
+<% if User.where(params[:name]).present? %>
+  <h1>ユーザー一覧</h1>
+<% else %>
+  <h1>検索結果</h1>
+<% end %>
 <div class="col-md-10 col-md-offset-1">
   <%= render 'search' %>
+  <br>
+  <br>
   <%= will_paginate %>
   <table class="table table-condensed table-hover" id="table-users">
     <thead>

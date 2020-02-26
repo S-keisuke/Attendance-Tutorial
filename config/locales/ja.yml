@@ -207,5 +207,6 @@ ja:
       short: "%m/%d %H:%M"
       time: "%H：%M"
     pm: 午後
-
+    
+    search: 検索
   

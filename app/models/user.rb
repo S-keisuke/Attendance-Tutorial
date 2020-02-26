@@ -51,11 +51,11 @@ class User < ApplicationRecord
   end
   
   # 追加機能No9関連
-  def self.search
+  def self.search(search)
     if search
-      Post.where(['name LIKE ?',"%#{search}%"])
+      where(['name LIKE ?',"%#{search}%"]) #検索とnameの部分一致を表示。User.は省略
     else
-      Post.all
+      all
     end
   end
 end

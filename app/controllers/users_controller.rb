@@ -6,8 +6,16 @@ class UsersController < ApplicationController
   before_action :set_one_month, only: :show
 
   def index
-    @users = User.paginate(page: params[:page])
+    # @users = User.paginate(page: params[:page])
+    # @users = User.where(activated: true).paginate(page: params[:page]).search(params[:search])
+    @users = User.paginate(page: params[:page]).search(params[:search])
   end
+  
+  #追加機能No9関連
+  # def search
+    # @users = User.search(params[:search])
+    # @users = User.where(activated: true).paginate(page: params[:page]).where('name LIKE ?', "%#{params[:search]}%")
+  # end
 
   def show
     @worked_sum = @attendances.where.not(started_at: nil).count
@@ -15,11 +23,6 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-  end
-  
-  # 追加機能No9関連
-  def search
-    @users = User.search(params[:search])
   end
 
   def create
