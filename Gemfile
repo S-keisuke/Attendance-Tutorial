@@ -7,7 +7,7 @@ gem 'faker' # 追加機能No2関連 サンプルユーザーを日本人風に�
 gem 'bootstrap-sass'
 gem 'will_paginate' # 複数表示をページ分けできる
 gem 'bootstrap-will_paginate' # 複数表示をページ分けできる（bootstrapでの編集可）
-gem 'puma',         '~> 3.7'
+gem 'puma',         '~> 3.12'
 gem 'sass-rails',   '~> 5.0'
 gem 'uglifier',     '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
