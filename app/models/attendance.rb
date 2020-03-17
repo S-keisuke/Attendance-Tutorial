@@ -18,4 +18,12 @@ class Attendance < ApplicationRecord
       errors.add(:started_at, "より早い退勤時間は無効です") if started_at > finished_at
     end
   end
+  
+  # 編集制限　当日より未来の編集はできない
+  validate :cannot_edit_future_day
+  def cannot_edit_future_day
+    if worked_on.present? && worked_on.future?
+      #errors.add("明日以降の編集はできません")  #if Date.current < worked_on
+    end
+  end 
 end

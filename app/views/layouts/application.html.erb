@@ -14,6 +14,7 @@
     <div class="container">
       <% flash.each do |message_type, msg| %>
         <div class="alert alert-<%= message_type %>"><%= msg.html_safe %></div>
+                                                     <!--msg.html_safe? との違いが分からない-->
       <% end %>
       <%= yield %>
       <%= debug(params) if Rails.env.development? %>

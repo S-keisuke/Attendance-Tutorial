@@ -2,6 +2,7 @@
 <%= form_with(model: @user, url: attendances_update_one_month_user_path(date: @first_day), local: true, method: :patch) do |f| %>
   <div>
     <h1>勤怠編集画面</h1>
+
     <table class="table table-bordered table-condensed table-hover" id="table-attendances">
       <thead>
         <tr>
@@ -19,9 +20,11 @@
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
               <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-              <% if !current_user.admin? && (Date.current < day.worked_on) %>
+              <% if Date.current < day.worked_on %>
+              <!--ログインしているのがaddmin かつ 出勤日が翌日以降　　 !current_user.admin? && -->
                 <td><%= attendance.time_field :started_at, readonly: true, class: "form-control" %></td>
                 <td><%= attendance.time_field :finished_at, readonly: true, class: "form-control" %></td>
+                <!--出勤時間と退勤時間は readonly（編集不可）になる-->
               <% else %>
                 <td><%= attendance.time_field :started_at, class: "form-control" %></td>
                 <td><%= attendance.time_field :finished_at, class: "form-control" %></td>
@@ -31,7 +34,11 @@
                   <%= working_times(day.started_at, day.finished_at) %>
                 <% end %>
               </td>
-              <td><%= attendance.text_field :note, class: "form-control" %></td>
+              <% if Date.current < day.worked_on %>
+                <td><%= attendance.text_field :note, readonly: true, class: "form-control" %></td>
+              <% else %>
+                <td><%= attendance.text_field :note, class: "form-control" %></td>
+              <% end %>
             </tr>
           <% end %>
         <% end %>
