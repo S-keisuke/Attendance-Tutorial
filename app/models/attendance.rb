@@ -19,7 +19,7 @@ class Attendance < ApplicationRecord
     end
   end
   
-  # 編集制限　当日より未来の編集はできない
+  # 編集制限　当日より未来の編集はできない(機能してない)
   validate :cannot_edit_future_day
   def cannot_edit_future_day
     if worked_on.present? && worked_on.future?
