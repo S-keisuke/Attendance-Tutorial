@@ -29,7 +29,7 @@ group :development do
 end
 
 group :production do #heroku連携時に追加した
-gem 'pg', '0.20.0'
+  gem 'pg', '0.20.0'
 end
 
 # Windows環境ではtzinfo-dataというgemを含める必要があります
