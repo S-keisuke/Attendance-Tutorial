@@ -24,6 +24,7 @@
 
 <div class="btn-users-show">
   <%= link_to "勤怠編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+  <%= link_to "週間表示", show_week_user_path(current_user), class: "btn btn-success flote-right" %>
 </div>
 
 <div>
@@ -66,7 +67,7 @@
           </td>
           <!--day.started_at は datetime型である、そこからhourの要素を取得-->
           <td><%= day.started_at.hour if day.started_at.present? %></td>
-          <td><%= day.started_at.min if day.started_at.present? %></td>
+          <td><%= day.started_at.round_to(15.minutes).min if day.started_at.present? %></td>
           <td>
             <!--attendance_state (attendances_helperにて定義)  -->
             <% if btn_text = attendance_state(day) %>
@@ -75,7 +76,7 @@
             <% end %>
           </td>
           <td><%= day.finished_at.hour if day.finished_at.present? %></td>
-          <td><%= day.finished_at.min if day.finished_at.present? %></td>
+          <td><%= day.finished_at.round_to(15.minutes).min if day.finished_at.present? %></td>
           <td></td>
           <td>
             <% if day.started_at.present? && day.finished_at.present? %>

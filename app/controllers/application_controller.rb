@@ -52,4 +52,22 @@ class ApplicationController < ActionController::Base
     flash[:danger] = "ページ情報の取得に失敗しました、再アクセスしてください。"
     redirect_to root_url
   end
+  
+  def set_one_week
+    @first_day_week = params[:date].nil? ? Date.current.beginning_of_week : params[:date].to_date
+    @last_day_week = @first_day_week + 6
+    one_week = [*@first_day_week..@last_day_week] #@first_dayから@last_dayの間の日付を配列に入れる
+    @attendances = @user.attendances.where(worked_on: @first_day_week..@last_day_week).order(:worked_on)
+    
+    unless one_week.count == @attendances.count
+      ActiveRecord::Base.transaction do
+        one_week.each { |day| @user.attendances.create!(worked_on: day) }
+      end
+    @attendances = @user.attendances.where(worked_on: @first_day_week..@last_day_week).order(:worked_on)
+    end
+    
+  rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
+    flash[:danger] = "ページ情報の取得に失敗しました、再アクセスしてください。"
+    redirect_to root_url
+  end
 end

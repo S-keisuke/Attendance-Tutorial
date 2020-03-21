@@ -1,26 +1,24 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :set_user, only: [:show, :show_week, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :correct_user, only: [:edit, :update, :show]
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :index]
   before_action :set_one_month, only: :show
-
+  before_action :set_one_week, only: :show_week
+  
   def index
     # @users = User.paginate(page: params[:page])
     # @users = User.where(activated: true).paginate(page: params[:page]).search(params[:search])
     @users = User.paginate(page: params[:page]).search(params[:search])
   end
-  
-  #追加機能No9関連
-  # def search
-    # @users = User.search(params[:search])
-    # @users = User.where(activated: true).paginate(page: params[:page]).where('name LIKE ?', "%#{params[:search]}%")
-  # end
 
   def show
     @worked_sum = @attendances.where.not(started_at: nil).count
   end
-
+  
+  def show_week
+  end
+  
   def new
     @user = User.new
   end
