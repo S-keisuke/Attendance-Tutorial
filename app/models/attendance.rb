@@ -19,11 +19,18 @@ class Attendance < ApplicationRecord
     end
   end
   
-  # 編集制限　当日より未来の編集はできない(機能してない)
-  validate :cannot_edit_future_day
+  # 編集制限　当日より未来の編集はできない
+  validate :cannot_edit_future_day, on: :update_one_month
   def cannot_edit_future_day
     if worked_on.present? && worked_on.future?
-      #errors.add("明日以降の編集はできません")  #if Date.current < worked_on
+      errors.add("明日以降の編集はできません") # if Date.current < worked_on
     end
-  end 
+  end
+  
+  # 編集制限　勤怠編集画面(更新)において退勤時間がない場合、出勤時間は無効
+  validate :started_at_is_invalid_without_finished_at
+  def started_at_is_invalid_without_finished_at
+    errors.add(:finished_at,"が必要です") if finished_at.blank? && started_at.present?
+  end
+  
 end
