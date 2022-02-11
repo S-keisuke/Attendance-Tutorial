@@ -8,7 +8,7 @@ gem 'bootstrap-sass'
 gem 'will_paginate' # 複数表示をページ分けできる
 gem 'bootstrap-will_paginate' # 複数表示をページ分けできる（bootstrapでの編集可）
 gem 'rounding' #追加機能No9関連　所望の時刻で表示時刻を丸めるgem
-gem 'puma',         '~> 3.7'
+gem 'puma',         '~> 4.3'
 gem 'sass-rails',   '~> 5.0'
 gem 'uglifier',     '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
